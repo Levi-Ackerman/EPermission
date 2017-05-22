@@ -2,9 +2,9 @@ package com.woyou.statemachine;
 
 import android.support.annotation.CallSuper;
 import android.support.annotation.IntDef;
+import android.util.Log;
 
-import com.uc.base.util.log.Log;
-import com.uc.config.ShellFeatureConfig;
+import com.woyou.common.BuildConstant;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -41,14 +41,13 @@ public abstract class State {
      * 上一个状态收到了迁移消息，刚迁移到了本状态 **/
     @CallSuper
     public void onEnter(){
-        if (ShellFeatureConfig.IS_DEVELOP_VERSION){
+        if (BuildConstant.IS_DEVELOP_VERSION){
             Log.i(TAG, "Transfer to " + getName());
         }
     }
 
     /**
      * 响应该状态下收到的消息，决定下一步迁移的状态
-     * @param event {@link com.uc.framework.permission.common.Event}
      * @param data 随消息携带的数据
      * @return true：消息已处理，false：消息未处理
      */

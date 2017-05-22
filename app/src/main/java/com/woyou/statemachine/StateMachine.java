@@ -5,8 +5,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 
-import com.uc.base.util.assistant.UCAssert;
-import com.uc.config.ShellFeatureConfig;
+import com.woyou.common.BuildConstant;
+import com.woyou.util.AssetUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +44,10 @@ public class StateMachine{
 
     protected void addState(State state){
         if (state.getStateType() == State.INIT_STATE){
-            if (ShellFeatureConfig.IS_DEVELOP_VERSION) {
+            if (BuildConstant.IS_DEVELOP_VERSION) {
                 //init state只能有一个，所以add时，状态集合里面一定没有initState
                 for (State s : mStates) {
-                    UCAssert.mustOk(s.getStateType() != State.INIT_STATE);
+                    AssetUtils.mustOk(s.getStateType() != State.INIT_STATE);
                 }
             }
             mInitState = state;
@@ -68,7 +68,7 @@ public class StateMachine{
     }
 
     protected final void transferTo(@NonNull final State toState) {
-        UCAssert.mustOk(mStates.contains(toState));
+        AssetUtils.mustOk(mStates.contains(toState));
         mCurrentState = toState;
         mCurrentState.onEnter();
         if (mCurrentState.getStateType() == State.FINISH_STATE){
@@ -81,7 +81,7 @@ public class StateMachine{
 
     public void start() {
         if (mInitState == null){
-            UCAssert.fail("You must add an init state in the machine first !");
+            AssetUtils.fail("You must add an init state in the machine first !");
             return ;
         }
         mCurrentState = mInitState;
